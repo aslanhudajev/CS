@@ -2,8 +2,7 @@ function mergeSort(arr) {
   //base case
   if (arr.length === 1) {
     return arr;
-  } 
-  else {
+  } else {
     const l = arr.length;
 
     //divide the array
@@ -18,27 +17,26 @@ function mergeSort(arr) {
       if (left[li] < right[ri]) {
         merged.push(left[li]);
         li++;
-      } 
-      else if (left[li] > right[ri]) {
+      } else if (left[li] > right[ri]) {
         merged.push(right[ri]);
         ri++;
-      } 
-      else if (left[li] === right[ri] && right[ri] !== undefined && left[li] !== undefined) {
+      } else if (
+        left[li] === right[ri] &&
+        right[ri] !== undefined &&
+        left[li] !== undefined
+      ) {
         merged.push(left[li]);
         li++;
-      } 
-      else if (left[li] === undefined && right[ri] !== undefined) {
+      } else if (left[li] === undefined && right[ri] !== undefined) {
         merged.push(right[ri]);
         ri++;
-      } 
-      else if (right[ri] === undefined && left[li] !== undefined) {
+      } else if (right[ri] === undefined && left[li] !== undefined) {
         merged.push(left[li]);
         li++;
-      } 
-      else break;
+      } else break;
     }
     return merged;
   }
 }
 
-export default mergeSort
+export default mergeSort;
