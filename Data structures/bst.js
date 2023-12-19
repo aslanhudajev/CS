@@ -138,6 +138,32 @@ const CreateTree = function CreateBinarySearchTree(...values) {
     if (!fn) return visited;
   }
 
+  function preOrder(fn) {
+    return preOrderRecursiveTraversal(root, fn);
+  }
+
+  function preOrderRecursiveTraversal(node, fn) {
+    if (node === null) return;
+
+    if (fn) {
+      //callback exists
+      fn(node);
+      preOrderRecursiveTraversal(node.left, fn);
+      preOrderRecursiveTraversal(node.right, fn);
+    } else {
+      //callback does not exist
+      let visited = [node];
+      if (node.left !== null) {
+        visited = visited.concat(preOrderRecursiveTraversal(node.left, fn));
+      }
+      if (node.right !== null) {
+        visited = visited.concat(preOrderRecursiveTraversal(node.right, fn));
+      }
+
+      return visited;
+    }
+  }
+
   function inOrder(fn) {
     return inOrderRecursiveTraversal(root, fn);
   }
@@ -146,33 +172,70 @@ const CreateTree = function CreateBinarySearchTree(...values) {
     if (node === null) return;
 
     if (fn) {
-      fn(node);
+      //callback exists
       inOrderRecursiveTraversal(node.left, fn);
+      fn(node);
       inOrderRecursiveTraversal(node.right, fn);
     } else {
-      return [].concat(
-        node,
-        inOrderRecursiveTraversal(node.left, fn),
-        inOrderRecursiveTraversal(node.right, fn)
-      );
-
-      let visited = [node];
+      //callback does not exist
+      let visited = [];
       if (node.left !== null) {
-        visited.concat(inOrderRecursiveTraversal(node.left, fn));
+        visited = visited.concat(inOrderRecursiveTraversal(node.left, fn));
       }
+      visited.push(node);
       if (node.right !== null) {
-        visited.concat(inOrderRecursiveTraversal(node.right, fn));
+        visited = visited.concat(inOrderRecursiveTraversal(node.right, fn));
       }
 
       return visited;
     }
   }
 
-  function preOrder(fn) {}
+  function postOrder(fn) {
+    return postOrderRecursiveTraversal(root, fn);
+  }
 
-  function postOrder(fn) {}
+  function postOrderRecursiveTraversal(node, fn) {
+        if (node === null) return;
 
-  return { root, insert, remove, find, levelOrder, inOrder };
+    if (fn) {
+      //callback exists
+      postOrderRecursiveTraversal(node.left, fn);
+      postOrderRecursiveTraversal(node.right, fn);
+      fn(node);
+    } else {
+      //callback does not exist
+      let visited = [];
+      if (node.left !== null) {
+        visited = visited.concat(postOrderRecursiveTraversal(node.left, fn));
+      }
+      if (node.right !== null) {
+        visited = visited.concat(postOrderRecursiveTraversal(node.right, fn));
+      }
+      visited.push(node);
+
+      return visited;
+    }
+  }
+
+  function height(node) {
+  }
+
+  function depth(node) {
+    return depthRecursiveTraversal(root, node);
+  }
+
+  function depthRecursiveTraversal(startNode, node) {
+    if (startNode === null) return 0;
+
+    if (node === startNode) {
+      return 1;
+    }
+    else if (node < startNode) return 1 + findRecursiveTraversal(startNode.left, node);
+    else return 1 + findRecursiveTraversal(startNode.right, node);
+  }
+
+  return { root, insert, remove, find, levelOrder, preOrder, inOrder, postOrder, height, depth};
 };
 
 export default CreateTree;

@@ -90,6 +90,14 @@ console.log(
 );
 console.table(tree.levelOrder());
 
+//preOrder tests
+console.log("Performing preOrder operation on tree (print all values)");
+tree.preOrder((node) => console.log(node.data));
+console.log(
+  "Performing preOrder operation on tree (no callback => returns array)"
+);
+console.table(tree.preOrder());
+
 //InOrder tests
 console.log("Performing inOrder operation on tree (print all values)");
 tree.inOrder((node) => console.log(node.data));
@@ -97,3 +105,16 @@ console.log(
   "Performing inOrder operation on tree (no callback => returns array)"
 );
 console.table(tree.inOrder());
+
+//postOrder tests
+console.log("Performing postOrder operation on tree (print all values)");
+tree.postOrder((node) => console.log(node.data));
+console.log(
+  "Performing postOrder operation on tree (no callback => returns array)"
+);
+console.table(tree.postOrder());
+
+//depth tests
+console.log("Performing depth operation on tree:");
+let node = tree.find(6345);
+console.log("Depth of node 6345: " + tree.depth(node));
