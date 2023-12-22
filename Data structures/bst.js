@@ -172,12 +172,12 @@ const CreateTree = function CreateBinarySearchTree(...values) {
     if (node === null) return;
 
     if (fn) {
-      //callback exists
+      //callback exists.
       inOrderRecursiveTraversal(node.left, fn);
       fn(node);
       inOrderRecursiveTraversal(node.right, fn);
     } else {
-      //callback does not exist
+      //callback does not exist.
       let visited = [];
       if (node.left !== null) {
         visited = visited.concat(inOrderRecursiveTraversal(node.left, fn));
@@ -196,15 +196,15 @@ const CreateTree = function CreateBinarySearchTree(...values) {
   }
 
   function postOrderRecursiveTraversal(node, fn) {
-        if (node === null) return;
+    if (node === null) return;
 
     if (fn) {
-      //callback exists
+      //callback exists.
       postOrderRecursiveTraversal(node.left, fn);
       postOrderRecursiveTraversal(node.right, fn);
       fn(node);
     } else {
-      //callback does not exist
+      //callback does not exist.
       let visited = [];
       if (node.left !== null) {
         visited = visited.concat(postOrderRecursiveTraversal(node.left, fn));
@@ -219,6 +219,19 @@ const CreateTree = function CreateBinarySearchTree(...values) {
   }
 
   function height(node) {
+    //not sure how to return the amount of edges without subtracting one...
+    let height = heightRecursiveTraversal(node);
+    return height === 0 ? height : height - 1;
+  }
+
+  function heightRecursiveTraversal(node) {
+    if (node === null) return 0;
+
+    let leftHeight = 1 + heightRecursiveTraversal(node.left);
+    let rightHeight = 1 + heightRecursiveTraversal(node.right);
+
+    if (leftHeight > rightHeight) return leftHeight;
+    else return rightHeight;
   }
 
   function depth(node) {
@@ -230,12 +243,49 @@ const CreateTree = function CreateBinarySearchTree(...values) {
 
     if (node === startNode) {
       return 1;
-    }
-    else if (node < startNode) return 1 + findRecursiveTraversal(startNode.left, node);
-    else return 1 + findRecursiveTraversal(startNode.right, node);
+    } else if (node < startNode)
+      return 1 + depthRecursiveTraversal(startNode.left, node);
+    else return 1 + depthRecursiveTraversal(startNode.right, node);
   }
 
-  return { root, insert, remove, find, levelOrder, preOrder, inOrder, postOrder, height, depth};
+  function isBalanced() {
+    let leftHeight = height(root.left);
+    let rightHeight = height(root.right);
+
+    if (leftHeight > rightHeight)
+      return leftHeight - rightHeight <= 1 ? true : false;
+    else return rightHeight - leftHeight <= 1 ? true : false;
+  }
+
+  function rebalance(mutation = true) {
+    const sortedArray = [];
+    inOrder((node) => sortedArray.push(node.data));
+
+    let newRoot = buildTree(sortedArray);
+
+    if (mutation) {
+      //do not understand why I can't just do root = newRoot.
+      //just does not work.
+      root.left = newRoot.left;
+      root.right = newRoot.right;
+      root.data = newRoot.data;
+    } else return newRoot;
+  }
+
+  return {
+    root,
+    insert,
+    remove,
+    find,
+    levelOrder,
+    preOrder,
+    inOrder,
+    postOrder,
+    height,
+    depth,
+    isBalanced,
+    rebalance,
+  };
 };
 
 export default CreateTree;
